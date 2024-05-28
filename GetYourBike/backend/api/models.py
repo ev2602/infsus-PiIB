@@ -34,7 +34,7 @@ class SaleEquipment(Equipment):
 class Reservation(models.Model):
     oib = models.CharField(max_length=9)
     date = models.DateField()
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product)
 
 class ReservationRent(Reservation):
     reservedDates = ArrayField(models.DateField(), default=list)

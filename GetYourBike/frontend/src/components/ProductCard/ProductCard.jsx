@@ -74,7 +74,7 @@ const ProductCard = ({ product, fetchBicycles }) => {
 
     return (
         <Card sx={{ height: "auto", width: "100%", marginBottom: "1px", cursor: 'pointer'}}>
-            <CardContent onClick={handleExpand}>
+            <CardContent>
                 <Typography variant="h6">
                     {product.model}
                 </Typography>
@@ -115,7 +115,7 @@ const ProductCard = ({ product, fetchBicycles }) => {
                 </> }
             </CardContent>
             <CardActions>
-                {isExpanded && ( isEditing ? (
+                {isExpanded ? ( isEditing ? (
                     <>
                         <Button size="small" onClick={handleSave}>Save</Button>
                         <Button size="small" onClick={handleCancelEdit}>Cancel</Button>
@@ -124,8 +124,12 @@ const ProductCard = ({ product, fetchBicycles }) => {
                     <>
                         <Button size="small" onClick={handleEdit}>Edit</Button>
                         <Button size="small" onClick={handleDelete}>Delete</Button>
+                        <Button size="small" onClick={handleExpand}>Less</Button>
                     </>
-                ))}
+                )) : 
+                <>
+                    <Button size="small" onClick={handleExpand}>More details</Button>
+                </>}
             </CardActions>
         </Card>
     );

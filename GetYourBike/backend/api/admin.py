@@ -44,16 +44,19 @@ class SaleEquipmentAdmin(EquipmentAdmin):
 admin.site.register(SaleEquipment, SaleEquipmentAdmin)
 
 class ReservationAdmin(admin.ModelAdmin):
-    list_display = ('oib', 'date', 'product')
+    list_display = ('oib', 'date')
+    filter_horizontal = ('products',)
 
-admin.site.register(Reservation, ReservationAdmin)
+admin.site.register(Reservation)
 
 class ReservationRentAdmin(ReservationAdmin):
-    list_display = ('oib', 'date', 'product', 'reservedDates')
+    list_display = ('oib', 'date', 'reservedDates')
+    filter_horizontal = ('products',)
 
-admin.site.register(ReservationRent, ReservationRentAdmin)
+admin.site.register(ReservationRent)
 
 class ReservationSaleAdmin(ReservationAdmin):
-    list_display = ('oib', 'date', 'product', 'dateToCollect')
+    list_display = ('oib', 'date', 'dateToCollect')
+    filter_horizontal = ('products',)
 
-admin.site.register(ReservationSale, ReservationSaleAdmin)
+admin.site.register(ReservationSale)

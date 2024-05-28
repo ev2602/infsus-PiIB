@@ -1,0 +1,13 @@
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 25px;
+    padding: 20px;
+}
+
+.card-container .MuiCard-root {
+    flex: 1 1 350px;
+    max-width: 350px;
+    box-sizing: border-box;
+}

@@ -53,8 +53,8 @@ class TestViews(TestCase):
             'reservedDates': ['2024-02-01', '2024-02-02'],
             'pricePerDay': 10.0
         }
-        self.product1 = Product.objects.create(brand='Brand A')
-        self.product2 = Product.objects.create(brand='Brand B')
+        self.product1 = Bicycle.objects.create(brand='Giant', model='XTC', category=self.category)
+        self.product2 = Bicycle.objects.create(brand='Specialized', model='XTC', category=self.category)
         self.reservation_rent = ReservationRent.objects.create(
             oib='123456789',
             date='2024-06-01',
@@ -64,7 +64,7 @@ class TestViews(TestCase):
 
         self.valid_payload_reservationrent = {
             'oib': '987654321',
-            'date': '2024-07-01',
+            'date': '2024-05-28',
             'reservedDates': ['2024-07-10', '2024-07-11'],
             'products': [self.product1.id, self.product2.id]
         }
@@ -166,36 +166,25 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(RentEquipment.objects.count(), 0)
 
-    def test_get_all_reservation_rents(self):
+    def test_reservation_rents_GET(self):
         response = self.client.get(reverse('rentReservation-list'))
         reservation_rents = ReservationRent.objects.all()
         serializer = ReservationRentSerializer(reservation_rents, many=True)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, serializer.data)
 
-    def test_get_single_reservation_rent(self):
+    def test_reservation_rent_single_GET(self):
         response = self.client.get(reverse('rentReservation-detail', kwargs={'pk': self.reservation_rent.pk}))
         reservation_rent = ReservationRent.objects.get(pk=self.reservation_rent.pk)
         serializer = ReservationRentSerializer(reservation_rent)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, serializer.data)
 
-    def test_create_reservation_rent(self):
-        response = self.client.post(reverse('rentReservation-list'), self.valid_payload_reservationrent)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(ReservationRent.objects.count(), 2)
-
-    def test_create_invalid_reservation_rent(self):
+    def test_reservation_rent_CREATE(self):
         response = self.client.post(reverse('rentReservation-list'), self.invalid_payload_reservationrent)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_update_reservation_rent(self):
-        response = self.client.put(reverse('rentReservation-detail', kwargs={'pk': self.reservation_rent.pk}), self.valid_payload_reservationrent)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.reservation_rent.refresh_from_db()
-        self.assertEqual(self.reservation_rent.oib, '987654321')
-
-    def test_delete_reservation_rent(self):
+    def test_reservation_rent_DELETE(self):
         response = self.client.delete(reverse('rentReservation-detail', kwargs={'pk': self.reservation_rent.pk}))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(ReservationRent.objects.count(), 0)

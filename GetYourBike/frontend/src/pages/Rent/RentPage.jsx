@@ -9,9 +9,8 @@ import bicycle from './bicycle.jpg';
 export default function RentPage() {
   const [bicycles, setBicycles] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [priceRange, setPriceRange] = useState('');
+  const [priceRange, setPriceRange] = useState([0, 100000]);
   const [categoryFilter, setCategoryFilter] = useState('');
-  const [modelFilter, setModelFilter] = useState('');
   const [brandFilter, setBrandFilter] = useState('');
   const [categories, setCategories] = useState([]);
 
@@ -52,14 +51,21 @@ export default function RentPage() {
   };
 
   const filteredBicycles = bicycles.filter((bicycle) => {
-    const { model, brand, category, price } = bicycle;
+    const { model, brand, category, pricePerDay } = bicycle;
     const searchLowerCase = searchTerm.toLowerCase();
-    const priceInRange = priceRange ? priceRange.includes(price) : true;
+    console.log("Price", priceRange[0])
+
+    const priceInRange =
+    (priceRange[0] <= pricePerDay && priceRange[1] >= pricePerDay)
+    
+    const searchedBicycles = ( model.toLowerCase().includes(searchLowerCase) ||
+    brand.toLowerCase().includes(searchLowerCase) ||
+    getCategoryNameById(category).toLowerCase().includes(searchLowerCase))
     return (
-      (model.toLowerCase().includes(modelFilter.toLowerCase()) || !modelFilter) &&
+      searchedBicycles &&
       (brand.toLowerCase().includes(brandFilter.toLowerCase()) || !brandFilter) &&
-      (getCategoryNameById(category).toLowerCase().includes(categoryFilter.toLowerCase()) || !categoryFilter) &&
-      priceInRange
+      (getCategoryNameById(category).toLowerCase().includes(categoryFilter.toLowerCase()) || !categoryFilter) 
+      && priceInRange
     );
   });
 
@@ -91,11 +97,11 @@ export default function RentPage() {
           onChange={handlePriceRangeChange}
           sx={{ marginBottom: '20px', marginRight: '20px', width: "100px" }}
         >
-          <MenuItem value="">All</MenuItem>
-          <MenuItem value="0-10">0-10€</MenuItem>
-          <MenuItem value="10-15">10-15€</MenuItem>
-          <MenuItem value="15-20">15-20€</MenuItem>
-          <MenuItem value="20+">20€+</MenuItem>
+          <MenuItem value={[0,100000]}>All</MenuItem>
+          <MenuItem value={[0,10]}>0-10€</MenuItem>
+          <MenuItem value={[10,15]}>10-15€</MenuItem>
+          <MenuItem value={[15,20]}>15-20€</MenuItem>
+          <MenuItem value={[20,10000]}>20€+</MenuItem>
         </TextField>
         <TextField
           select

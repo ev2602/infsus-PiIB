@@ -71,6 +71,7 @@ export default function AdminPage() {
                         onChange={(e) => setNewProductRent({ ...newProductRent, brand: e.target.value })}
                         fullWidth
                         margin="dense"
+                        inputProps={{ "data-testid": "brand-input" }}
                     />
                     <TextField
                         label="Model"
@@ -78,9 +79,10 @@ export default function AdminPage() {
                         onChange={(e) => setNewProductRent({ ...newProductRent, model: e.target.value })}
                         fullWidth
                         margin="dense"
+                        inputProps={{ "data-testid": "model-input" }}
                     />
                     <FormControl fullWidth margin="dense">
-                        <InputLabel id="category-label">Category</InputLabel>
+                        <InputLabel id="category-label" inputProps={{ "data-testid": "category-select" }}>Category</InputLabel>
                         <Select
                             labelId="category-label"
                             value={newProductRent.category}
@@ -97,6 +99,7 @@ export default function AdminPage() {
                         onChange={(e) => setNewProductRent({ ...newProductRent, reservedDates: e.target.value.split(',') })}
                         fullWidth
                         margin="dense"
+                        inputProps={{ "data-testid": "reserved-dates-input" }}
                     />
                     <TextField
                         label="Price Per Day"
@@ -104,6 +107,7 @@ export default function AdminPage() {
                         onChange={(e) => setNewProductRent({ ...newProductRent, pricePerDay: e.target.value })}
                         fullWidth
                         margin="dense"
+                        inputProps={{ "data-testid": "price-per-day-input" }}
                     />
                 </DialogContent>
                 <DialogActions>
